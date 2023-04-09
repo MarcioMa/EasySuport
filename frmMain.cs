@@ -10,18 +10,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace EasySuport
 {
     public partial class frmMain : Form
     {
 
-        SqlConnection dbConnection = new SqlConnection(@"Data Source = (LocalDB)\MSSQLLocalDB; AttachDbFilename=C:\Users\Marcio\source\repos\EasySuport\dbRegistro.mdf;Integrated Security = True; Connect Timeout = 30");
+        SqlConnection dbConnection = new SqlConnection(@"Data Source=" + Environment.MachineName + @"\SQLEXPRESS;Initial Catalog=dbRegistro;Integrated Security=True");
+
         SqlCommand command;
         SqlDataAdapter dataAdapter;
         DataTable dataTable = new DataTable();
+        
         int pos = 0;
         bool Atualizar;
+        const string filepath = "C:\\Server\\serv.dat";
+        string dirPath = "C:\\Server";
 
         public frmMain()
         {
@@ -29,21 +34,36 @@ namespace EasySuport
         }
 
         private void frmMain_Load(object sender, EventArgs e)
-        { 
+        {
+            try
+            {
+                dbConnection.Open();
+
+                if (dbConnection.State == ConnectionState.Open)
+                {
+                    dbConnection.Close();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
             ExibirDados();
 
             //Configura tooltipstatus
             toolStripStatusLabel1.Text = "Data: " + DateTime.Now.ToString("dd/MM/yyyy");
             toolStripStatusLabel2.Text = "Hora: " + DateTime.Now.ToString("HH:mm");
-            toolStripStatusLabel4.Text = "de { "+ dataTable.Rows.Count +" }";
+            toolStripStatusLabel4.Text = "de { " + dataTable.Rows.Count + " }";
         }
 
         public void ExibirDados()
         {
-                dbConnection.Open();
-                dataAdapter = new SqlDataAdapter("SELECT * FROM tb_Registro", dbConnection);
-                dataAdapter.Fill(dataTable);
-                dbConnection.Close();
+            dbConnection.Open();
+            dataAdapter = new SqlDataAdapter("SELECT * FROM tb_Registro", dbConnection);
+            dataAdapter.Fill(dataTable);
+            dbConnection.Close();
 
             if (dataTable.Rows.Count > 0)
             {
@@ -66,11 +86,11 @@ namespace EasySuport
 
         private void bntProximo_Click(object sender, EventArgs e)
         {
-            if (pos < dataTable.Rows.Count -1)
+            if (pos < dataTable.Rows.Count - 1)
             {
                 pos += 1;
                 ExibirDados();
-            }  
+            }
         }
 
         private void bntVoltar_Click(object sender, EventArgs e)
@@ -83,12 +103,12 @@ namespace EasySuport
         }
 
         private void bntSalvar_Click(object sender, EventArgs e)
-        { 
+        {
             try
             {
                 dbConnection.Open();
 
-                SqlCommand dbComando = new SqlCommand("SELECT * FROM tb_Registro WHERE Solicitante='" + textBoxSolicitante.Text + "'",dbConnection);
+                SqlCommand dbComando = new SqlCommand("SELECT * FROM tb_Registro WHERE Solicitante='" + textBoxSolicitante.Text + "'", dbConnection);
                 SqlDataReader reader = dbComando.ExecuteReader();
                 if (reader.HasRows)
                 {
@@ -108,7 +128,7 @@ namespace EasySuport
                 {
                     if (MessageBox.Show("Deseja Atualizar o registro do usuario " + textBoxSolicitante.Text + " ? ", "Aviso", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
-                        string sqlQuery = "UPDATE tb_Registro SET Email= @Email, Hospital=@Hospital, Unidade=@Unidade, Setor=@Setor, Andar=@Andar, Ramal=@Ramal, CRM=@CRM, Login=@Login, HST_IP=@HST_IP WHERE Solicitante='"+textBoxSolicitante.Text+"'";
+                        string sqlQuery = "UPDATE tb_Registro SET Email= @Email, Hospital=@Hospital, Unidade=@Unidade, Setor=@Setor, Andar=@Andar, Ramal=@Ramal, CRM=@CRM, Login=@Login, HST_IP=@HST_IP WHERE Solicitante='" + textBoxSolicitante.Text + "'";
 
                         SqlCommand sqlCommand = new SqlCommand(sqlQuery, dbConnection);
                         sqlCommand.Parameters.AddWithValue("@Email", textBoxEmail.Text);
@@ -129,14 +149,14 @@ namespace EasySuport
                 }
                 //Atualizar = false
                 else
-                    {
-                        SqlCommand dbCommand = new SqlCommand("INSERT INTO tb_Registro(Solicitante, CPF, Email, Hospital, Unidade, Setor, Andar, Ramal, Protocolo, Problema, CRM, Login, HST_IP) VALUES('" + textBoxSolicitante.Text + "', '" + textBoxCPF.Text + "', '" + textBoxEmail.Text + "', '" + textBoxHospital.Text + "', '" + textBoxUnidade.Text + "', '" + textBoxSetor.Text + "', '" + textBoxAndar.Text + "', '" + textBoxRamal.Text + "', '" + textBoxProtocolo.Text + "', '" + textBoxProblema.Text + "', '" + textBoxCRM.Text + "', '" + textBoxLogin.Text + "', '" + textBoxIPHST.Text + "')", dbConnection);
-                        dbCommand.ExecuteNonQuery();
-                        MessageBox.Show("Registro salvo com sucesso");
+                {
+                    SqlCommand dbCommand = new SqlCommand("INSERT INTO tb_Registro(Solicitante, CPF, Email, Hospital, Unidade, Setor, Andar, Ramal, Protocolo, Problema, CRM, Login, HST_IP) VALUES('" + textBoxSolicitante.Text + "', '" + textBoxCPF.Text + "', '" + textBoxEmail.Text + "', '" + textBoxHospital.Text + "', '" + textBoxUnidade.Text + "', '" + textBoxSetor.Text + "', '" + textBoxAndar.Text + "', '" + textBoxRamal.Text + "', '" + textBoxProtocolo.Text + "', '" + textBoxProblema.Text + "', '" + textBoxCRM.Text + "', '" + textBoxLogin.Text + "', '" + textBoxIPHST.Text + "')", dbConnection);
+                    dbCommand.ExecuteNonQuery();
+                    MessageBox.Show("Registro salvo com sucesso");
                     dbConnection.Close();
                     ExibirDados();
                 }
-                }
+            }
             catch (Exception)
             {
                 throw;
@@ -157,7 +177,7 @@ namespace EasySuport
                     try
                     {
                         dbConnection.Open();
-                        command = new SqlCommand("DELETE FROM tb_Registro WHERE Solicitante=@Solicitante ",dbConnection);
+                        command = new SqlCommand("DELETE FROM tb_Registro WHERE Solicitante=@Solicitante ", dbConnection);
 
                         command.Parameters.AddWithValue("@Solicitante", textBoxSolicitante.Text);
                         command.ExecuteNonQuery();
@@ -183,7 +203,7 @@ namespace EasySuport
             textBoxHospital.Text = "";
             textBoxUnidade.Text = "";
             textBoxSetor.Text = "";
-            textBoxAndar.Text= "";
+            textBoxAndar.Text = "";
             textBoxRamal.Text = "";
             textBoxProtocolo.Text = "";
             textBoxCRM.Text = "";
@@ -197,7 +217,7 @@ namespace EasySuport
         {
             string valor = Interaction.InputBox("Informe o nome completo ou cpf", "Pesquisar");
 
-            string sqlQuery = "SELECT * FROM tb_Registro WHERE Solicitante='"+ valor.ToString()+"'";
+            string sqlQuery = "SELECT * FROM tb_Registro WHERE Solicitante='" + valor.ToString() + "'";
 
             dbConnection.Open();
             SqlCommand dbComando = new SqlCommand(sqlQuery, dbConnection);
@@ -260,14 +280,14 @@ namespace EasySuport
 
         private void bntCopiarEmail_Click(object sender, EventArgs e)
         {
-                textBoxEmail.SelectionStart = 0;
-                textBoxEmail.SelectionLength = textBoxEmail.Text.Length;
+            textBoxEmail.SelectionStart = 0;
+            textBoxEmail.SelectionLength = textBoxEmail.Text.Length;
 
-                if (textBoxEmail.Text != "")
-                {
-                    Clipboard.SetText(textBoxEmail.SelectedText.ToString());
-                    MessageBox.Show("informação copiada!", "Aviso");
-                }
+            if (textBoxEmail.Text != "")
+            {
+                Clipboard.SetText(textBoxEmail.SelectedText.ToString());
+                MessageBox.Show("informação copiada!", "Aviso");
+            }
         }
 
         private void bntCopiarCRM_Click(object sender, EventArgs e)
@@ -392,12 +412,12 @@ namespace EasySuport
 
         private void bntCopiaTudo_Click(object sender, EventArgs e)
         {
-            string CopiaTudo = 
-                "Solicitante: " + textBoxSolicitante.Text + 
+            string CopiaTudo =
+                "Solicitante: " + textBoxSolicitante.Text +
                 Environment.NewLine + "CPF: " + textBoxCPF.Text +
                 Environment.NewLine + "E-mail: " + textBoxEmail.Text +
-                Environment.NewLine + "Hospital: " + textBoxHospital.Text + 
-                Environment.NewLine + "Unidade: "+textBoxUnidade.Text +
+                Environment.NewLine + "Hospital: " + textBoxHospital.Text +
+                Environment.NewLine + "Unidade: " + textBoxUnidade.Text +
                 Environment.NewLine + "Setor: " + textBoxSetor.Text +
                 Environment.NewLine + "Andar: " + textBoxAndar.Text +
                 Environment.NewLine + "Ramal: " + textBoxRamal.Text +
@@ -424,6 +444,9 @@ namespace EasySuport
                 bntRelatorio.Visible = true;
                 bntEnviarEmail.Visible = true;
                 tabControl.Visible = true;
+
+                //Carrega metodo ler file
+                readFile();
             }
             else
             {
@@ -432,24 +455,24 @@ namespace EasySuport
                 bntRelatorio.Visible = false;
                 bntEnviarEmail.Visible = false;
                 tabControl.Visible = false;
-             }
+            }
         }
 
         private void bntEnviarEmail_Click(object sender, EventArgs e)
         {
-            string target = "https://outlook.live.com/mail/";
+            string target = textBoxServicoEmail.Text;
 
             Microsoft.Win32.RegistryKey key =
            Microsoft.Win32.Registry.LocalMachine.OpenSubKey("Software\\microsoft\\windows\\currentversion\\app paths\\OUTLOOK.EXE");
-            string path = (string) key.GetValue("Path");
+            string path = (string)key.GetValue("Path");
 
-            if (path != null)
+            if (path != null && MessageBox.Show("Deseja abrir outlook desktop?", "Abrir Outlook", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 System.Diagnostics.Process.Start("OUTLOOK.EXE");
             }
             else
             {
-                if (MessageBox.Show("Confirma abertura outlook via web?","Outlook Web", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                if (MessageBox.Show("Deseja abrir serviço de e-mail web?", "Enviar E-mail", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     System.Diagnostics.Process.Start(target);
                 }
@@ -466,12 +489,137 @@ namespace EasySuport
             if (MessageBox.Show("Deseja ajusta index agora?", "Ajuste", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 dbConnection.Open();
-                string Query = "insert into #temp From TbRegistro set identity_insert TbRegistro ON truncate table TbRegistro alter table #temp drop column Id set identity_insert TbRegistro OFF insert into TbRegistro select * from #temp";
-                command = new SqlCommand(Query, dbConnection);
+                command = new SqlCommand("select * into #temp From Tb_Registro set identity_insert Tb_Registro ON truncate table Tb_Registro alter table #temp drop column Id set identity_insert Tb_Registro OFF insert into Tb_Registro select * from #temp", dbConnection);
+
                 command.ExecuteNonQuery();
                 dbConnection.Close();
                 MessageBox.Show("Ajuste realizado com sucesso!", "Aviso");
-            }           
+            }
+        }
+
+        private void bntConfig_Click(object sender, EventArgs e)
+        {
+            bntConfig.Enabled = false;
+            groupBoxServ.Enabled = true;
+        }
+
+        private void bntRestaura_Click(object sender, EventArgs e)
+        {
+            textBoxServicoEmail.Text = "https://outlook.live.com/mail";
+            bntSalvarServEmail.Enabled = true;
+        }
+
+        private void bntSalvarServEmail_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Directory.Exists(dirPath))
+                {
+                    //Salvar Arquivo no diretorio existente
+
+                    if (!File.Exists(filepath))
+                    {
+                        using (StreamWriter sw = File.CreateText(filepath))
+                        {
+                            sw.WriteLine(textBoxServicoEmail.Text);
+                        }
+                        MessageBox.Show("Arquivo criado com sucesso!", "Criar Arquivo");
+                    }
+                    else
+                    {
+                        using (StreamWriter sw = File.CreateText(filepath))
+                        {
+                            sw.WriteLine(textBoxServicoEmail.Text);
+                        }
+                        MessageBox.Show("Arquivo salvo com sucesso!", "Salvar Arquivo");
+                    }
+                }
+                else
+                {
+                    DirectoryInfo directory = Directory.CreateDirectory(dirPath);
+
+                    //Salvar arquivo no diretorio criado
+
+                    if (!File.Exists(filepath))
+                    {
+                        using (StreamWriter sw = File.CreateText(filepath))
+                        {
+                            sw.WriteLine(textBoxServicoEmail.Text);
+                        }
+                        MessageBox.Show("Arquivo criado com sucesso!", "Criar Arquivo");
+                    }
+                    else
+                    {
+                        using (StreamWriter sw = File.CreateText(filepath))
+                        {
+                            sw.WriteLine(textBoxServicoEmail.Text);
+                        }
+                        MessageBox.Show("Arquivo salvo com sucesso!", "Salvar Arquivo");
+                    }
+
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            //Normaliza botões novamente
+            bntConfig.Enabled = true;
+            bntSalvarServEmail.Enabled = false;
+            groupBoxServ.Enabled = false;
+        }
+
+        public void readFile()
+        {
+            try
+            {
+                if (File.Exists(filepath))
+                {
+                    String[] linhas = File.ReadAllLines(filepath);
+                    foreach (var ln in linhas)
+                    {
+                        if (linhas != null)
+                        {
+                            textBoxServicoEmail.Text = ln;
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Não há registro click em restaura ou digite novo", "Aviso");
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        private void bntCancelar_Click(object sender, EventArgs e)
+        {
+            bntConfig.Enabled = true;
+            bntSalvarServEmail.Enabled = false;
+            groupBoxServ.Enabled = false;
+        }
+
+        private void textBoxServicoEmail_TextChanged(object sender, EventArgs e)
+        {
+            bntRestaura.Enabled = true;
+            bntSalvarServEmail.Enabled = true;
+        }
+
+        private void bntBackup_Click(object sender, EventArgs e)
+        {
+            //Carrega janela backup
+            FrmBackup frmBackup = new FrmBackup();
+            frmBackup.ShowDialog();
+        }
+
+        private void bntRelatorio_Click(object sender, EventArgs e)
+        {
+            frmRelatorio frmRelatorio = new frmRelatorio();
+            frmRelatorio.ShowDialog();
         }
     }
 }

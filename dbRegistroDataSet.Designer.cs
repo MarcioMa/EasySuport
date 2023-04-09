@@ -589,7 +589,7 @@ namespace EasySuport {
                 this.columnAndar.MaxLength = 50;
                 this.columnRamal.MaxLength = 50;
                 this.columnProtocolo.MaxLength = 50;
-                this.columnProblema.MaxLength = 50;
+                this.columnProblema.MaxLength = 255;
                 this.columnCRM.MaxLength = 50;
                 this.columnLogin.MaxLength = 50;
                 this.columnHST_IP.MaxLength = 50;

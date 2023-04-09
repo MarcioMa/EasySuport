@@ -86,6 +86,13 @@ namespace EasySuport
             this.bntEnviarCodigo = new System.Windows.Forms.Button();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPageEmail = new System.Windows.Forms.TabPage();
+            this.groupBoxServ = new System.Windows.Forms.GroupBox();
+            this.bntCancelar = new System.Windows.Forms.Button();
+            this.bntRestaura = new System.Windows.Forms.Button();
+            this.bntSalvarServEmail = new System.Windows.Forms.Button();
+            this.textBoxServicoEmail = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.bntConfig = new System.Windows.Forms.Button();
             this.bntAjustaIndex = new System.Windows.Forms.Button();
             this.bntBackup = new System.Windows.Forms.Button();
             this.bntSobre = new System.Windows.Forms.Button();
@@ -101,6 +108,7 @@ namespace EasySuport
             this.statusStrip1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabPageEmail.SuspendLayout();
+            this.groupBoxServ.SuspendLayout();
             this.tabPageServidor.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -596,6 +604,8 @@ namespace EasySuport
             this.imageList1.Images.SetKeyName(7, "Edit.png");
             this.imageList1.Images.SetKeyName(8, "backup_icon.png");
             this.imageList1.Images.SetKeyName(9, "arrowrestoration_268.png");
+            this.imageList1.Images.SetKeyName(10, "img_page_30.png");
+            this.imageList1.Images.SetKeyName(11, "restore.png");
             // 
             // bntApagar
             // 
@@ -654,6 +664,8 @@ namespace EasySuport
             // tabPageEmail
             // 
             this.tabPageEmail.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPageEmail.Controls.Add(this.groupBoxServ);
+            this.tabPageEmail.Controls.Add(this.bntConfig);
             this.tabPageEmail.Controls.Add(this.bntAjustaIndex);
             this.tabPageEmail.Controls.Add(this.bntBackup);
             this.tabPageEmail.Controls.Add(this.bntSobre);
@@ -664,7 +676,98 @@ namespace EasySuport
             this.tabPageEmail.Padding = new System.Windows.Forms.Padding(3);
             this.tabPageEmail.Size = new System.Drawing.Size(405, 418);
             this.tabPageEmail.TabIndex = 0;
-            this.tabPageEmail.Text = "Automação";
+            this.tabPageEmail.Text = "Opções Auxiliar";
+            // 
+            // groupBoxServ
+            // 
+            this.groupBoxServ.Controls.Add(this.bntCancelar);
+            this.groupBoxServ.Controls.Add(this.bntRestaura);
+            this.groupBoxServ.Controls.Add(this.bntSalvarServEmail);
+            this.groupBoxServ.Controls.Add(this.textBoxServicoEmail);
+            this.groupBoxServ.Controls.Add(this.label14);
+            this.groupBoxServ.Enabled = false;
+            this.groupBoxServ.Location = new System.Drawing.Point(6, 210);
+            this.groupBoxServ.Name = "groupBoxServ";
+            this.groupBoxServ.Size = new System.Drawing.Size(391, 202);
+            this.groupBoxServ.TabIndex = 50;
+            this.groupBoxServ.TabStop = false;
+            this.groupBoxServ.Text = "Configurar Serviço E-mail";
+            // 
+            // bntCancelar
+            // 
+            this.bntCancelar.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.bntCancelar.ImageIndex = 4;
+            this.bntCancelar.ImageList = this.imageList1;
+            this.bntCancelar.Location = new System.Drawing.Point(152, 93);
+            this.bntCancelar.Name = "bntCancelar";
+            this.bntCancelar.Size = new System.Drawing.Size(110, 95);
+            this.bntCancelar.TabIndex = 16;
+            this.bntCancelar.Text = "Cancelar";
+            this.bntCancelar.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.bntCancelar.UseVisualStyleBackColor = true;
+            this.bntCancelar.Click += new System.EventHandler(this.bntCancelar_Click);
+            // 
+            // bntRestaura
+            // 
+            this.bntRestaura.Enabled = false;
+            this.bntRestaura.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.bntRestaura.ImageIndex = 11;
+            this.bntRestaura.ImageList = this.imageList1;
+            this.bntRestaura.Location = new System.Drawing.Point(36, 93);
+            this.bntRestaura.Name = "bntRestaura";
+            this.bntRestaura.Size = new System.Drawing.Size(110, 95);
+            this.bntRestaura.TabIndex = 16;
+            this.bntRestaura.Text = "Restaurar";
+            this.bntRestaura.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.bntRestaura.UseVisualStyleBackColor = true;
+            this.bntRestaura.Click += new System.EventHandler(this.bntRestaura_Click);
+            // 
+            // bntSalvarServEmail
+            // 
+            this.bntSalvarServEmail.Enabled = false;
+            this.bntSalvarServEmail.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.bntSalvarServEmail.ImageIndex = 0;
+            this.bntSalvarServEmail.ImageList = this.imageList1;
+            this.bntSalvarServEmail.Location = new System.Drawing.Point(268, 93);
+            this.bntSalvarServEmail.Name = "bntSalvarServEmail";
+            this.bntSalvarServEmail.Size = new System.Drawing.Size(110, 95);
+            this.bntSalvarServEmail.TabIndex = 15;
+            this.bntSalvarServEmail.Text = "Salvar";
+            this.bntSalvarServEmail.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.bntSalvarServEmail.UseVisualStyleBackColor = true;
+            this.bntSalvarServEmail.Click += new System.EventHandler(this.bntSalvarServEmail_Click);
+            // 
+            // textBoxServicoEmail
+            // 
+            this.textBoxServicoEmail.Location = new System.Drawing.Point(83, 43);
+            this.textBoxServicoEmail.Name = "textBoxServicoEmail";
+            this.textBoxServicoEmail.Size = new System.Drawing.Size(295, 26);
+            this.textBoxServicoEmail.TabIndex = 6;
+            this.textBoxServicoEmail.Text = "https://outlook.live.com/mail";
+            this.textBoxServicoEmail.TextChanged += new System.EventHandler(this.textBoxServicoEmail_TextChanged);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(6, 46);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(71, 20);
+            this.label14.TabIndex = 7;
+            this.label14.Text = "Servidor ";
+            // 
+            // bntConfig
+            // 
+            this.bntConfig.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.bntConfig.ImageIndex = 10;
+            this.bntConfig.ImageList = this.imageList1;
+            this.bntConfig.Location = new System.Drawing.Point(139, 107);
+            this.bntConfig.Name = "bntConfig";
+            this.bntConfig.Size = new System.Drawing.Size(123, 95);
+            this.bntConfig.TabIndex = 49;
+            this.bntConfig.Text = "Serviço Email";
+            this.bntConfig.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.bntConfig.UseVisualStyleBackColor = true;
+            this.bntConfig.Click += new System.EventHandler(this.bntConfig_Click);
             // 
             // bntAjustaIndex
             // 
@@ -672,7 +775,7 @@ namespace EasySuport
             this.bntAjustaIndex.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.bntAjustaIndex.ImageIndex = 9;
             this.bntAjustaIndex.ImageList = this.imageList1;
-            this.bntAjustaIndex.Location = new System.Drawing.Point(139, 107);
+            this.bntAjustaIndex.Location = new System.Drawing.Point(274, 6);
             this.bntAjustaIndex.Name = "bntAjustaIndex";
             this.bntAjustaIndex.Size = new System.Drawing.Size(123, 95);
             this.bntAjustaIndex.TabIndex = 48;
@@ -687,20 +790,21 @@ namespace EasySuport
             this.bntBackup.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.bntBackup.ImageIndex = 8;
             this.bntBackup.ImageList = this.imageList1;
-            this.bntBackup.Location = new System.Drawing.Point(6, 107);
+            this.bntBackup.Location = new System.Drawing.Point(139, 6);
             this.bntBackup.Name = "bntBackup";
             this.bntBackup.Size = new System.Drawing.Size(123, 95);
             this.bntBackup.TabIndex = 47;
             this.bntBackup.Text = "Backup SQL";
             this.bntBackup.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.bntBackup.UseVisualStyleBackColor = true;
+            this.bntBackup.Click += new System.EventHandler(this.bntBackup_Click);
             // 
             // bntSobre
             // 
             this.bntSobre.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.bntSobre.ImageIndex = 6;
             this.bntSobre.ImageList = this.imageList1;
-            this.bntSobre.Location = new System.Drawing.Point(274, 6);
+            this.bntSobre.Location = new System.Drawing.Point(274, 107);
             this.bntSobre.Name = "bntSobre";
             this.bntSobre.Size = new System.Drawing.Size(123, 95);
             this.bntSobre.TabIndex = 46;
@@ -714,7 +818,7 @@ namespace EasySuport
             this.bntEnviarEmail.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.bntEnviarEmail.ImageIndex = 5;
             this.bntEnviarEmail.ImageList = this.imageList1;
-            this.bntEnviarEmail.Location = new System.Drawing.Point(139, 6);
+            this.bntEnviarEmail.Location = new System.Drawing.Point(6, 107);
             this.bntEnviarEmail.Name = "bntEnviarEmail";
             this.bntEnviarEmail.Size = new System.Drawing.Size(123, 95);
             this.bntEnviarEmail.TabIndex = 44;
@@ -736,6 +840,7 @@ namespace EasySuport
             this.bntRelatorio.Text = "Relatório";
             this.bntRelatorio.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.bntRelatorio.UseVisualStyleBackColor = true;
+            this.bntRelatorio.Click += new System.EventHandler(this.bntRelatorio_Click);
             // 
             // tabPageServidor
             // 
@@ -831,6 +936,8 @@ namespace EasySuport
             this.statusStrip1.PerformLayout();
             this.tabControl.ResumeLayout(false);
             this.tabPageEmail.ResumeLayout(false);
+            this.groupBoxServ.ResumeLayout(false);
+            this.groupBoxServ.PerformLayout();
             this.tabPageServidor.ResumeLayout(false);
             this.tabPageServidor.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
@@ -892,7 +999,6 @@ namespace EasySuport
         private System.Windows.Forms.Button bntCopiarIP;
         private System.Windows.Forms.TextBox textBoxIPHST;
         private System.Windows.Forms.Label label13;
-        private System.Data.DataSet dataSet;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel4;
         private System.Windows.Forms.Button bntCopiaTudo;
         private System.Windows.Forms.ImageList imageList1;
@@ -909,6 +1015,13 @@ namespace EasySuport
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton toolStripButton2;
         private System.Windows.Forms.Button bntAjustaIndex;
+        private System.Windows.Forms.GroupBox groupBoxServ;
+        private System.Windows.Forms.Button bntSalvarServEmail;
+        private System.Windows.Forms.TextBox textBoxServicoEmail;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Button bntConfig;
+        private System.Windows.Forms.Button bntRestaura;
+        private System.Windows.Forms.Button bntCancelar;
     }
 }
 

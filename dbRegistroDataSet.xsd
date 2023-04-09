@@ -64,7 +64,7 @@
   <xs:element name="dbRegistroDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="True" msprop:Generator_DataSetName="dbRegistroDataSet" msprop:Generator_UserDSName="dbRegistroDataSet">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="tb_Registro" msprop:Generator_TableClassName="tb_RegistroDataTable" msprop:Generator_TableVarName="tabletb_Registro" msprop:Generator_RowChangedName="tb_RegistroRowChanged" msprop:Generator_TablePropName="tb_Registro" msprop:Generator_RowDeletingName="tb_RegistroRowDeleting" msprop:Generator_RowChangingName="tb_RegistroRowChanging" msprop:Generator_RowEvHandlerName="tb_RegistroRowChangeEventHandler" msprop:Generator_RowDeletedName="tb_RegistroRowDeleted" msprop:Generator_RowClassName="tb_RegistroRow" msprop:Generator_UserTableName="tb_Registro" msprop:Generator_RowEvArgName="tb_RegistroRowChangeEvent">
+        <xs:element name="tb_Registro" msprop:Generator_TableClassName="tb_RegistroDataTable" msprop:Generator_TableVarName="tabletb_Registro" msprop:Generator_TablePropName="tb_Registro" msprop:Generator_RowDeletingName="tb_RegistroRowDeleting" msprop:Generator_RowChangingName="tb_RegistroRowChanging" msprop:Generator_RowEvHandlerName="tb_RegistroRowChangeEventHandler" msprop:Generator_RowDeletedName="tb_RegistroRowDeleted" msprop:Generator_UserTableName="tb_Registro" msprop:Generator_RowChangedName="tb_RegistroRowChanged" msprop:Generator_RowEvArgName="tb_RegistroRowChangeEvent" msprop:Generator_RowClassName="tb_RegistroRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="Id" msdata:ReadOnly="true" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnVarNameInTable="columnId" msprop:Generator_ColumnPropNameInRow="Id" msprop:Generator_ColumnPropNameInTable="IdColumn" msprop:Generator_UserColumnName="Id" type="xs:int" />
@@ -134,7 +134,7 @@
               <xs:element name="Problema" msprop:Generator_ColumnVarNameInTable="columnProblema" msprop:Generator_ColumnPropNameInRow="Problema" msprop:Generator_ColumnPropNameInTable="ProblemaColumn" msprop:Generator_UserColumnName="Problema" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
-                    <xs:maxLength value="50" />
+                    <xs:maxLength value="255" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
